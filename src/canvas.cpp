@@ -29,7 +29,10 @@ void Canvas::frame_end() const {
   glfwSwapBuffers(window_ptr_);
 }
 
-void Canvas::render() { ImGui::Render(); }
+void Canvas::render() {
+  glClear(GL_COLOR_BUFFER_BIT);
+  ImGui::Render();
+}
 
 void Canvas::glfw_error_callback(int error, const char *description) {
   fprintf(stderr, "Glfw Error %d: %s\n", error, description);
