@@ -22,8 +22,13 @@ add_library(impui SHARED src/canvas.cpp)
 target_include_directories(impui PUBLIC imgui include)
 target_link_libraries(impui PUBLIC imgui)
 
+function(add_example name)
+  add_executable(${name} examples/${name}.cpp)
+  target_include_directories(${name} PRIVATE include)
+  target_link_libraries(${name} impui)
+  set_target_properties(${name} PROPERTIES CXX_STANDARD 17)
+endfunction()
+
 # Build examples
-add_executable(hello_world examples/hello_world.cpp)
-target_include_directories(hello_world PRIVATE include)
-target_link_libraries(hello_world impui)
-set_target_properties(hello_world PROPERTIES CXX_STANDARD 17)
+add_example(hello_world)
+add_example(simple_plot)
