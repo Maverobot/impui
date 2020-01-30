@@ -148,10 +148,6 @@ int main(int, char **) {
                          &show_another_window);
     }
 
-    int display_w, display_h;
-    glfwGetFramebufferSize(canvas.get(), &display_w, &display_h);
-    glViewport(0, 0, display_w, display_h);
-
     // Set background color
     glClearColor(clear_color.x, clear_color.y, clear_color.z, clear_color.w);
     glClear(GL_COLOR_BUFFER_BIT);
