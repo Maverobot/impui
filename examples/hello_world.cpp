@@ -1,8 +1,8 @@
 #include <impui/canvas.h>
 
-#include <stdio.h>
+#include <cstdio>
 
-int main(int, char**) {
+int main(int /*unused*/, char** /*unused*/) {
   impui::Canvas canvas(1280, 720, "Dear ImGui GLFW+OpenGL2 example", nullptr, nullptr);
   if (canvas.get() == nullptr) {
     return 1;
@@ -16,10 +16,10 @@ int main(int, char**) {
   // Main loop
   while (!canvas.shouldClose()) {
     canvas.poll();
-    canvas.frame_start();
+    canvas.frameStart();
 
     // 1. Show a simple window
-    canvas.show_window("Hello, world!", [&show_another_window, &clear_color] {
+    canvas.showWindow("Hello, world!", [&show_another_window, &clear_color] {
       static float f = 0.0f;
       static int counter = 0;
 
@@ -29,8 +29,9 @@ int main(int, char**) {
 
       ImGui::SliderFloat("float", &f, 0.0f,
                          1.0f);  // Edit 1 float using a slider from 0.0f to 1.0f
-      ImGui::ColorEdit3("clear color",
-                        (float*)&clear_color);  // Edit 3 floats representing a color
+      ImGui::ColorEdit3(
+          "clear color",
+          reinterpret_cast<float*>(&clear_color));  // Edit 3 floats representing a color
 
       if (ImGui::Button("Button")) {
         // Buttons return true when clicked (most
@@ -46,23 +47,23 @@ int main(int, char**) {
 
     // 2. Show another simple window.
     if (show_another_window) {
-      canvas.show_window("Another window",
-                         [&show_another_window] {
-                           // window will have a closing button that will
-                           // clear the bool when clicked)
-                           ImGui::Text("Hello from another window!");
-                           if (ImGui::Button("Close Me")) {
-                             show_another_window = false;
-                           }
-                         },
-                         &show_another_window);
+      canvas.showWindow("Another window",
+                        [&show_another_window] {
+                          // window will have a closing button that will
+                          // clear the bool when clicked)
+                          ImGui::Text("Hello from another window!");
+                          if (ImGui::Button("Close Me")) {
+                            show_another_window = false;
+                          }
+                        },
+                        &show_another_window);
     }
 
     // Set background color
     glClearColor(clear_color.x, clear_color.y, clear_color.z, clear_color.w);
 
     canvas.render();
-    canvas.frame_end();
+    canvas.frameEnd();
   }
 
   return 0;

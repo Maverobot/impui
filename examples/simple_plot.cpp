@@ -9,7 +9,7 @@
 #include <sstream>
 #include <vector>
 
-#include <stdio.h>
+#include <cstdio>
 
 template <class T>
 std::ostream& operator<<(std::ostream& o, const std::vector<T>& arr) {
@@ -19,7 +19,7 @@ std::ostream& operator<<(std::ostream& o, const std::vector<T>& arr) {
 
 class PlotData {
  public:
-  PlotData(size_t buffer_size = 100) : buffer_size_(buffer_size) {}
+  explicit PlotData(size_t buffer_size = 100) : buffer_size_(buffer_size) {}
   void append(const std::string& name, float value) {
     if (!exist(name)) {
       map_.insert(std::make_pair(name, Container{}));
@@ -39,7 +39,7 @@ class PlotData {
     return map_.at(name).data();
   }
 
-  void clear_all() {
+  void clearAll() {
     for (auto& pair : map_) {
       pair.second.clear();
     }
@@ -80,15 +80,10 @@ class PlotData {
   DataMap map_;
   size_t buffer_size_;
 
-  bool exist(const std::string name) {
-    if (map_.find(name) == map_.end()) {
-      return false;
-    }
-    return true;
-  }
+  bool exist(const std::string& name) { return map_.find(name) != map_.end(); }
 };
 
-int main(int, char**) {
+int main(int /*unused*/, char** /*unused*/) {
   impui::Canvas canvas(1280, 720, "Simple Impui plot example", nullptr, nullptr);
   if (canvas.get() == nullptr) {
     return 1;
@@ -107,9 +102,9 @@ int main(int, char**) {
     value += 0.1f;
 
     canvas.poll();
-    canvas.frame_start();
+    canvas.frameStart();
     // 1. Show a simple window
-    canvas.show_window("ImViz", [&data_map, &show_plot] {
+    canvas.showWindow("ImViz", [&data_map, &show_plot] {
       static float f = 0.0f;
 
       ImGui::Text("This is a simple visualization demo.");
@@ -118,7 +113,7 @@ int main(int, char**) {
                          1.0f);  // Edit 1 float using a slider from 0.0f to 1.0f
 
       if (ImGui::Button("Reset")) {
-        data_map.clear_all();
+        data_map.clearAll();
       }
 
       ImGui::Checkbox("show plot", &show_plot);
@@ -129,23 +124,23 @@ int main(int, char**) {
 
     // 2. Show another simple window.
     if (show_plot) {
-      canvas.show_window(
+      canvas.showWindow(
           "Plot",
           [&data_map] {
             ImGui::PlotLines("position", data_map.data("position"), data_map.len("position"), 0,
-                             NULL, -1, 1, ImVec2(0, 80));
+                             nullptr, -1, 1, ImVec2(0, 80));
 
             ImGui::PlotLines("velocity", data_map.data("velocity"), data_map.len("velocity"), 0,
-                             NULL, -1, 1, ImVec2(0, 80));
+                             nullptr, -1, 1, ImVec2(0, 80));
 
             ImGui::PlotLines("acceleration", data_map.data("acceleration"),
-                             data_map.len("acceleration"), 0, NULL, -1, 1, ImVec2(0, 80));
+                             data_map.len("acceleration"), 0, nullptr, -1, 1, ImVec2(0, 80));
           },
           &show_plot, ImGuiWindowFlags_AlwaysAutoResize);
     }
 
     canvas.render();
-    canvas.frame_end();
+    canvas.frameEnd();
   }
 
   return 0;

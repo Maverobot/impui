@@ -14,9 +14,9 @@ namespace impui {
 class Canvas {
  public:
   template <typename... Args>
-  Canvas(Args&&... args) {
+  explicit Canvas(Args&&... args) {
     // Setup glfw window
-    glfwSetErrorCallback(glfw_error_callback);
+    glfwSetErrorCallback(glfwErrorCallback);
     if (!glfwInit()) {
       throw std::runtime_error("glfw initialization failed.");
     }
@@ -51,12 +51,12 @@ class Canvas {
 
   void poll();
 
-  void frame_start();
+  void frameStart();
 
-  void frame_end() const;
+  void frameEnd() const;
 
   template <typename Fn>
-  void show_window(char const* name, Fn&& fn, bool* open = NULL, ImGuiWindowFlags flags = 0) {
+  void showWindow(char const* name, Fn&& fn, bool* open = nullptr, ImGuiWindowFlags flags = 0) {
     ImGui::Begin(name, open, flags);  // Create a window called $name
     std::forward<Fn>(fn)();
     ImGui::End();
@@ -65,7 +65,7 @@ class Canvas {
   void render();
 
  private:
-  static void glfw_error_callback(int error, const char* description);
+  static void glfwErrorCallback(int error, const char* description);
 
   GLFWwindow* window_ptr_{nullptr};
 };
