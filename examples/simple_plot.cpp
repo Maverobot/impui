@@ -32,7 +32,7 @@ class PlotData {
   }
 
   float const* data(const std::string& name) const {
-    if (map_.find(name) == map_.end()) {
+    if (!exist(name)) {
       return nullptr;
     }
 
@@ -46,21 +46,21 @@ class PlotData {
   }
 
   void clear(const std::string& name) {
-    if (map_.find(name) == map_.end()) {
+    if (!exist(name)) {
       throw std::invalid_argument("no key found!");
     }
     map_.at(name).clear();
   }
 
   size_t len(const std::string& name) const {
-    if (map_.find(name) == map_.end()) {
+    if (!exist(name)) {
       throw std::invalid_argument("no key found!");
     }
     return map_.at(name).size();
   }
 
   std::string str(const std::string& name) const {
-    if (map_.find(name) == map_.end()) {
+    if (!exist(name)) {
       return {};
     }
 
@@ -80,7 +80,7 @@ class PlotData {
   DataMap map_;
   size_t buffer_size_;
 
-  bool exist(const std::string& name) { return map_.find(name) != map_.end(); }
+  bool exist(const std::string& name) const { return map_.find(name) != map_.end(); }
 };
 
 int main(int /*unused*/, char** /*unused*/) {
