@@ -144,11 +144,6 @@ int main(int, char**) {
           &show_plot, ImGuiWindowFlags_AlwaysAutoResize);
     }
 
-    // glClearColor(50.0f / 255.0f, 200.0f / 255.0f, 100.0f / 255.0f, 1.0f);
-
-    const int size = 4;
-    std::array<float, size> la;
-
     canvas.render();
     canvas.frame_end();
   }
