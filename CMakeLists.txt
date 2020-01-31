@@ -42,7 +42,8 @@ add_example(simple_plot)
 include(${CMAKE_CURRENT_LIST_DIR}/cmake/ClangTools.cmake OPTIONAL
         RESULT_VARIABLE CLANG_TOOLS)
 if(CLANG_TOOLS)
-  file(GLOB_RECURSE SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp)
+  file(GLOB_RECURSE SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp
+       ${CMAKE_CURRENT_SOURCE_DIR}/examples/*.cpp)
   file(GLOB_RECURSE HEADERS ${CMAKE_CURRENT_SOURCE_DIR}/include/*.h
        ${CMAKE_CURRENT_SOURCE_DIR}/src/*.h)
   add_format_target(${PROJECT_NAME} FILES ${SOURCES} ${HEADERS})
