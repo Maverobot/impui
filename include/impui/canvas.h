@@ -12,8 +12,9 @@
 
 namespace impui {
 class Canvas {
-public:
-  template <typename... Args> Canvas(Args &&... args) {
+ public:
+  template <typename... Args>
+  Canvas(Args&&... args) {
     // Setup glfw window
     glfwSetErrorCallback(glfw_error_callback);
     if (!glfwInit()) {
@@ -22,12 +23,12 @@ public:
     window_ptr_ = glfwCreateWindow(std::forward<Args>(args)...);
 
     glfwMakeContextCurrent(window_ptr_);
-    glfwSwapInterval(1); // Enable vsync
+    glfwSwapInterval(1);  // Enable vsync
 
     // Setup Dear ImGui context
     IMGUI_CHECKVERSION();
     ImGui::CreateContext();
-    ImGuiIO &io = ImGui::GetIO();
+    ImGuiIO& io = ImGui::GetIO();
     (void)io;
     // io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;     // Enable
     // Keyboard Controls io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad; //
@@ -44,7 +45,7 @@ public:
 
   ~Canvas();
 
-  GLFWwindow *get() const noexcept;
+  GLFWwindow* get() const noexcept;
 
   bool shouldClose() const;
 
@@ -55,18 +56,20 @@ public:
   void frame_end() const;
 
   template <typename Fn>
-  static void show_window(char const *name, Fn &&fn, bool *open = NULL,
+  static void show_window(char const* name,
+                          Fn&& fn,
+                          bool* open = NULL,
                           ImGuiWindowFlags flags = 0) {
-    ImGui::Begin(name, open, flags); // Create a window called $name
+    ImGui::Begin(name, open, flags);  // Create a window called $name
     std::forward<Fn>(fn)();
     ImGui::End();
   }
 
   static void render();
 
-private:
-  static void glfw_error_callback(int error, const char *description);
+ private:
+  static void glfw_error_callback(int error, const char* description);
 
-  GLFWwindow *window_ptr_{nullptr};
+  GLFWwindow* window_ptr_{nullptr};
 };
-} // namespace impui
+}  // namespace impui
