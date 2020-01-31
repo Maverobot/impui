@@ -55,8 +55,9 @@ public:
   void frame_end() const;
 
   template <typename Fn>
-  static void show_window(char const *name, Fn &&fn, bool *open = nullptr) {
-    ImGui::Begin(name, open); // Create a window called $name
+  static void show_window(char const *name, Fn &&fn, bool *open = NULL,
+                          ImGuiWindowFlags flags = 0) {
+    ImGui::Begin(name, open, flags); // Create a window called $name
     std::forward<Fn>(fn)();
     ImGui::End();
   }
