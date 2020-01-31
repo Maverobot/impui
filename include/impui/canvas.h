@@ -49,23 +49,20 @@ class Canvas {
 
   bool shouldClose() const;
 
-  static void poll();
+  void poll();
 
-  static void frame_start();
+  void frame_start();
 
   void frame_end() const;
 
   template <typename Fn>
-  static void show_window(char const* name,
-                          Fn&& fn,
-                          bool* open = NULL,
-                          ImGuiWindowFlags flags = 0) {
+  void show_window(char const* name, Fn&& fn, bool* open = NULL, ImGuiWindowFlags flags = 0) {
     ImGui::Begin(name, open, flags);  // Create a window called $name
     std::forward<Fn>(fn)();
     ImGui::End();
   }
 
-  static void render();
+  void render();
 
  private:
   static void glfw_error_callback(int error, const char* description);
