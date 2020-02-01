@@ -39,9 +39,11 @@ int main(int /*unused*/, char** /*unused*/) {
     if (show_plot) {
       canvas.showWindow("Plot",
                         [plot_data = std::as_const(plot_data)] {
-                          impui::plot(plot_data, "position");
-                          impui::plot(plot_data, "velocity");
-                          impui::plot(plot_data, "acceleration");
+                          impui::PlotOptions options;
+                          options.graph_size(ImVec2(0, 80));
+                          impui::plot(plot_data, "position", options);
+                          impui::plot(plot_data, "velocity", options);
+                          impui::plot(plot_data, "acceleration", options);
                         },
                         &show_plot, ImGuiWindowFlags_AlwaysAutoResize);
     }
