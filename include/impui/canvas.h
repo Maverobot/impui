@@ -21,6 +21,9 @@ class Canvas {
       throw std::runtime_error("glfw initialization failed.");
     }
     window_ptr_ = glfwCreateWindow(std::forward<Args>(args)...);
+    if (window_ptr_ == nullptr) {
+      throw std::runtime_error("glfwCreateWindow failed.");
+    }
 
     glfwMakeContextCurrent(window_ptr_);
     glfwSwapInterval(1);  // Enable vsync
@@ -44,8 +47,6 @@ class Canvas {
   }
 
   ~Canvas();
-
-  GLFWwindow* get() const noexcept;
 
   bool shouldClose() const;
 

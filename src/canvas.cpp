@@ -10,10 +10,6 @@ Canvas::~Canvas() {
   glfwTerminate();
 }
 
-GLFWwindow* Canvas::get() const noexcept {
-  return window_ptr_;
-}
-
 bool Canvas::shouldClose() const {
   return glfwWindowShouldClose(window_ptr_) != 0;
 }

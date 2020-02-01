@@ -10,9 +10,6 @@
 
 int main(int /*unused*/, char** /*unused*/) {
   impui::Canvas canvas(1280, 720, "Simple Impui plot example", nullptr, nullptr);
-  if (canvas.get() == nullptr) {
-    return 1;
-  }
 
   impui::PlotData plot_data(100);
 

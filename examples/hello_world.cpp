@@ -4,9 +4,6 @@
 
 int main(int /*unused*/, char** /*unused*/) {
   impui::Canvas canvas(1280, 720, "Dear ImGui GLFW+OpenGL2 example", nullptr, nullptr);
-  if (canvas.get() == nullptr) {
-    return 1;
-  }
 
   // Our state
   bool show_demo_window = true;
