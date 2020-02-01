@@ -14,6 +14,7 @@ std::ostream& operator<<(std::ostream& o, const std::vector<T>& arr) {
 }
 }  // namespace
 
+namespace impui {
 class PlotData {
  public:
   explicit PlotData(size_t buffer_size = 100) : buffer_size_(buffer_size) {}
@@ -79,3 +80,4 @@ class PlotData {
 
   bool exist(const std::string& name) const { return map_.find(name) != map_.end(); }
 };
+}  // namespace impui

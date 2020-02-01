@@ -14,7 +14,7 @@ int main(int /*unused*/, char** /*unused*/) {
     return 1;
   }
 
-  PlotData data_map(100);
+  impui::PlotData data_map(100);
 
   bool show_plot = false;
   float value = 0.001;
