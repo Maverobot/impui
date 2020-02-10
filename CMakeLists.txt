@@ -9,6 +9,8 @@ if(POLICY CMP0072)
   cmake_policy(SET CMP0072 OLD)
 endif(POLICY CMP0072)
 
+option(EXAMPLES "compile with examples" off)
+
 find_package(glfw3 REQUIRED)
 find_package(OpenGL REQUIRED)
 
@@ -48,8 +50,10 @@ function(add_example name)
 endfunction()
 
 # Build examples
-add_example(hello_world)
-add_example(simple_plot)
+if(EXAMPLES)
+  add_example(hello_world)
+  add_example(simple_plot)
+endif()
 
 # ##############################################################################
 
