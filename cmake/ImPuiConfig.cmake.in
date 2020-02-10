@@ -1,0 +1,13 @@
+get_filename_component(ImPui_CMAKE_DIR "${CMAKE_CURRENT_LIST_FILE}" PATH)
+include(CMakeFindDependencyMacro)
+
+list(APPEND CMAKE_MODULE_PATH ${ImPui_CMAKE_DIR})
+
+find_package(glfw3 REQUIRED)
+find_package(OpenGL REQUIRED)
+
+if(NOT TARGET ImPui::ImPui)
+  include("${ImPui_CMAKE_DIR}/ImPuiTargets.cmake")
+endif()
+
+set(ImPui_LIBRARIES ImPui::ImPui)
