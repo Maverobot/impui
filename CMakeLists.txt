@@ -44,6 +44,7 @@ function(add_example name)
   target_include_directories(${name} PRIVATE include)
   target_link_libraries(${name} impui)
   set_target_properties(${name} PROPERTIES CXX_STANDARD 14)
+  set_target_properties(${name} PROPERTIES CXX_EXTENSIONS OFF)
 endfunction()
 
 # Build examples
