@@ -1,55 +1,28 @@
 #include <imgui_plot.h>
 #include <impui/canvas.h>
-#include <impui/plot.hpp>
-#include <impui/plot_data.hpp>
+#include <impui/simple_plotter.h>
 
 #include <cmath>
 #include <iostream>
 
 #include <cstdio>
 
-int main(int /*unused*/, char** /*unused*/) {
-  impui::Canvas canvas(1280, 720, "Simple Impui plot example", nullptr, nullptr);
-
-  impui::PlotData plot_data(100);
+int main(int argc, char* argv[]) {
+  if (argc != 2) {
+    std::cout << "Usage: " << argv[0] << " buffer_size[int]" << std::endl;
+    return 0;
+  }
+  impui::SimplePlotter plotter(atoi(argv[1]));
 
   bool show_plot = false;
   float value = 0.001;
   // Main loop
-  while (!canvas.shouldClose()) {
+  for (;;) {
     // update data
-    plot_data.append("position", std::sin(value));
-    plot_data.append("velocity", std::cos(value));
-    plot_data.append("acceleration", -std::sin(value));
+    plotter.plot({{"position", std::sin(value)},
+                  {"velocity", std::cos(value)},
+                  {"acceleration", -std::sin(value)}});
     value += 0.1f;
-
-    canvas.poll();
-    canvas.frameStart();
-
-    // 1. Show a simple window
-    canvas.showWindow("ImViz", [&plot_data, &show_plot] {
-      if (ImGui::Button("Reset")) {
-        plot_data.clearAll();
-      }
-      ImGui::SameLine();
-      ImGui::Checkbox("show plot", &show_plot);
-    });
-
-    // 2. Show another simple window.
-    if (show_plot) {
-      canvas.showWindow("Plot",
-                        [plot_data = std::as_const(plot_data)] {
-                          impui::PlotOptions options;
-                          options.graph_size(ImVec2(0, 80));
-                          impui::plot(plot_data, "position", options);
-                          impui::plot(plot_data, "velocity", options);
-                          impui::plot(plot_data, "acceleration", options);
-                        },
-                        &show_plot, ImGuiWindowFlags_AlwaysAutoResize);
-    }
-
-    canvas.render();
-    canvas.frameEnd();
   }
 
   return 0;
