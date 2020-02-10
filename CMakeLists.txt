@@ -23,7 +23,7 @@ target_link_libraries(imgui PUBLIC glfw ${OPENGL_LIBRARIES})
 target_include_directories(imgui PUBLIC imgui)
 
 # Build impui library
-add_library(impui SHARED src/canvas.cpp)
+add_library(impui SHARED src/canvas.cpp src/simple_plotter.cpp)
 target_include_directories(impui PUBLIC imgui include)
 target_link_libraries(impui PUBLIC imgui)
 
@@ -31,7 +31,7 @@ function(add_example name)
   add_executable(${name} examples/${name}.cpp)
   target_include_directories(${name} PRIVATE include)
   target_link_libraries(${name} impui)
-  set_target_properties(${name} PROPERTIES CXX_STANDARD 17)
+  set_target_properties(${name} PROPERTIES CXX_STANDARD 14)
 endfunction()
 
 # Build examples
