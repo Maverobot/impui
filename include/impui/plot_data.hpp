@@ -8,6 +8,8 @@
 #include <utility>
 #include <vector>
 
+#include <impui/sorted_map.h>
+
 namespace {
 template <class T>
 std::ostream& operator<<(std::ostream& o, const std::vector<T>& arr) {
@@ -22,7 +24,7 @@ class PlotData {
   explicit PlotData(size_t buffer_size = 100) : buffer_size_(buffer_size) {}
   void append(const std::string& name, float value) {
     if (!exist(name)) {
-      map_.insert(std::make_pair(name, Container{}));
+      map_.insert_with_key(std::make_pair(name, Container{}));
     }
     auto& data = map_.at(name);
     data.push_back(value);
@@ -73,16 +75,11 @@ class PlotData {
     return oss.str();
   }
 
-  auto keys() const {
-    std::vector<std::string> keys;
-    std::transform(map_.begin(), map_.end(), std::back_inserter(keys),
-                   [](const auto& pair) { return pair.first; });
-    return keys;
-  }
+  auto const& keys() const { return map_.keys(); }
 
  private:
   using Container = std::vector<float>;
-  using DataMap = std::map<std::string, Container>;
+  using DataMap = impui::sorted_map<std::string, Container>;
 
   DataMap map_;
   size_t buffer_size_;
