@@ -63,10 +63,9 @@ function(add_tidy_target _target)
   add_custom_target(
     tidy-${_target}
     # TODO: "parallel" can have multiple fixes at the same position, which
-    # should be fixed.
-    # TODO: after tidy fix, a clang-format should be performed automatically.
-    COMMAND ${PARALLEL_PROG} ${CLANG_TIDY_PROG} -fix -p=${CMAKE_BINARY_DIR}
-            ${PARALLEL_DELIMITER} ${ARG_FILES}
+    # should be fixed. TODO: after tidy fix, a clang-format should be performed
+    # automatically.
+    COMMAND ${CLANG_TIDY_PROG} -fix -p=${CMAKE_BINARY_DIR} ${ARG_FILES}
     WORKING_DIRECTORY ${CMAKE_CURRENT_LIST_DIR}/..
     DEPENDS ${ARG_DEPENDS}
     COMMENT "Running clang-tidy for ${_target}"
