@@ -1,5 +1,6 @@
 #pragma once
 
+#include <algorithm>
 #include <iterator>
 #include <map>
 #include <sstream>
@@ -70,6 +71,13 @@ class PlotData {
     oss << data;
     oss << "]";
     return oss.str();
+  }
+
+  auto keys() const {
+    std::vector<std::string> keys;
+    std::transform(map_.begin(), map_.end(), std::back_inserter(keys),
+                   [](const auto& pair) { return pair.first; });
+    return keys;
   }
 
  private:

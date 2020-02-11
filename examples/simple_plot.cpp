@@ -16,12 +16,16 @@ int main(int argc, char* argv[]) {
 
   bool show_plot = false;
   float value = 0.001;
+
   // Main loop
   for (;;) {
     // update data
-    plotter.plot({{"position", std::sin(value)},
-                  {"velocity", std::cos(value)},
-                  {"acceleration", -std::sin(value)}});
+    plotter.add({{"position", std::sin(value)},
+                 {"velocity", std::cos(value)},
+                 {"acceleration", -std::sin(value)}});
+    Eigen::Matrix<double, 5, 1> mat = Eigen::Matrix<double, 5, 1>::Random();
+    plotter.add("eigen_vec", mat);
+    plotter.plot();
     value += 0.1f;
   }
 

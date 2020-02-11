@@ -13,6 +13,7 @@ option(EXAMPLES "compile with examples" off)
 
 find_package(glfw3 REQUIRED)
 find_package(OpenGL REQUIRED)
+find_package(Eigen3 REQUIRED)
 
 # Build imgui library
 add_library(
@@ -37,8 +38,11 @@ target_include_directories(
   PUBLIC $<INSTALL_INTERFACE:include>
          $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
          $<INSTALL_INTERFACE:imgui>
-         $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/imgui>)
+         $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/imgui>
+         $<BUILD_INTERFACE:${EIGEN3_INCLUDE_DIR}>)
 target_link_libraries(impui PUBLIC imgui)
+set_target_properties(impui PROPERTIES CXX_STANDARD 14)
+set_target_properties(impui PROPERTIES CXX_EXTENSIONS OFF)
 
 # Define example target helper function
 function(add_example name)
