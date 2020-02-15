@@ -8,7 +8,7 @@
 #include <iostream>
 #include <memory>
 
-namespace Eigen {
+namespace Not_Eigen {
 template <typename Derived>
 typename Eigen::PlainObjectBase<Derived>::Scalar const* begin(
     const Eigen::PlainObjectBase<Derived>& m) {
@@ -19,7 +19,7 @@ typename Eigen::PlainObjectBase<Derived>::Scalar const* end(
     const Eigen::PlainObjectBase<Derived>& m) {
   return m.data() + m.size();
 }
-}  // namespace Eigen
+}  // namespace Not_Eigen
 
 namespace impui {
 class SimplePlotter {
@@ -33,8 +33,8 @@ class SimplePlotter {
   template <typename Derived>
   void add(const std::string& key, const Eigen::PlainObjectBase<Derived>& matrix) {
     int i = 0;
-    for (auto& value : matrix) {
-      data_.append(key + std::to_string(i), value);
+    for (auto it = Not_Eigen::begin(matrix); it < Not_Eigen::end(matrix); it++) {
+      data_.append(key + std::to_string(i), *it);
       i++;
     }
   }
