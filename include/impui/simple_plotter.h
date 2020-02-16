@@ -33,7 +33,7 @@ class SimplePlotter {
     options_.graph_size(ImVec2(0, 80));
   }
 
-  void add(std::vector<std::pair<std::string, double>> name_value_pairs) {
+  void add(const std::vector<std::pair<std::string, double>>& name_value_pairs) {
     for (const auto& pair : name_value_pairs) {
       data_.append(pair.first, pair.second);
     }

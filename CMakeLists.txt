@@ -42,7 +42,7 @@ target_include_directories(
             $<INSTALL_INTERFACE:imgui>
             $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/imgui>
             $<BUILD_INTERFACE:${EIGEN3_INCLUDE_DIR}>)
-target_link_libraries(impui INTERFACE imgui realtime_utils)
+target_link_libraries(impui INTERFACE imgui concurrency_utils)
 target_compile_features(impui INTERFACE cxx_std_14)
 
 # Define example target helper function
@@ -57,6 +57,7 @@ endfunction()
 if(EXAMPLES)
   add_example(hello_world)
   add_example(simple_plot)
+  add_example(simple_realtime_plot)
 endif()
 
 # ##############################################################################
@@ -80,7 +81,7 @@ include(GNUInstallDirs)
 set(INSTALL_CONFIGDIR ${CMAKE_INSTALL_LIBDIR}/cmake/ImPui)
 
 install(
-  TARGETS impui imgui realtime_utils
+  TARGETS impui imgui concurrency_utils
   EXPORT impui-targets
   LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
   ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR})
