@@ -41,6 +41,8 @@ class PlotData {
     return map_.at(name).data();
   }
 
+  void setBufferSize(size_t buffer_size) { buffer_size_ = buffer_size; }
+
   void clearAll() {
     for (auto& pair : map_) {
       pair.second.clear();

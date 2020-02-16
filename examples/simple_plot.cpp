@@ -15,7 +15,8 @@ int main(int argc, char* argv[]) {
     std::cout << "Usage: " << argv[0] << " buffer_size[int]" << std::endl;
     return 0;
   }
-  impui::SimplePlotter plotter(atoi(argv[1]));
+  impui::SimplePlotter plotter;
+  plotter.setBufferSize(atoi(argv[1]));
 
   bool show_plot = false;
   float value = 0.001;

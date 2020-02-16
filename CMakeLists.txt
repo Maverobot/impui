@@ -15,6 +15,8 @@ find_package(glfw3 REQUIRED)
 find_package(OpenGL REQUIRED)
 find_package(Eigen3 REQUIRED)
 
+add_subdirectory(third_party/concurrency_utils)
+
 # Build imgui library
 add_library(
   imgui SHARED
@@ -31,26 +33,24 @@ target_include_directories(
                $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/imgui>)
 
 # Build impui library
-add_library(impui SHARED src/canvas.cpp src/simple_plotter.cpp)
+add_library(impui INTERFACE)
 add_library(ImPui::impui ALIAS impui)
 target_include_directories(
   impui
-  PUBLIC $<INSTALL_INTERFACE:include>
-         $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
-         $<INSTALL_INTERFACE:imgui>
-         $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/imgui>
-         $<BUILD_INTERFACE:${EIGEN3_INCLUDE_DIR}>)
-target_link_libraries(impui PUBLIC imgui)
-set_target_properties(impui PROPERTIES CXX_STANDARD 14)
-set_target_properties(impui PROPERTIES CXX_EXTENSIONS OFF)
+  INTERFACE $<INSTALL_INTERFACE:include>
+            $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+            $<INSTALL_INTERFACE:imgui>
+            $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/imgui>
+            $<BUILD_INTERFACE:${EIGEN3_INCLUDE_DIR}>)
+target_link_libraries(impui INTERFACE imgui realtime_utils)
+target_compile_features(impui INTERFACE cxx_std_14)
 
 # Define example target helper function
 function(add_example name)
   add_executable(${name} examples/${name}.cpp)
   target_include_directories(${name} PRIVATE include)
   target_link_libraries(${name} impui)
-  set_target_properties(${name} PROPERTIES CXX_STANDARD 14)
-  set_target_properties(${name} PROPERTIES CXX_EXTENSIONS OFF)
+  target_compile_features(${name} PRIVATE cxx_std_14)
 endfunction()
 
 # Build examples
@@ -80,7 +80,7 @@ include(GNUInstallDirs)
 set(INSTALL_CONFIGDIR ${CMAKE_INSTALL_LIBDIR}/cmake/ImPui)
 
 install(
-  TARGETS impui imgui
+  TARGETS impui imgui realtime_utils
   EXPORT impui-targets
   LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
   ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR})

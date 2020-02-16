@@ -1,0 +1,3 @@
+[submodule "third_party/concurrency_utils"]
+	path = third_party/concurrency_utils
+	url = https://github.com/Maverobot/concurrency_utils.git
