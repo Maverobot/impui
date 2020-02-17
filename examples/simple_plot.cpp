@@ -25,9 +25,9 @@ int main(int argc, char* argv[]) {
   auto last = std::chrono::steady_clock::now();
   for (;;) {
     // update data
-    plotter.add({{"position", std::sin(value)},
-                 {"velocity", std::cos(value)},
-                 {"acceleration", -std::sin(value)}});
+    plotter.add({{"position", std::sin(value / 3)},
+                 {"velocity", std::cos(value / 3)},
+                 {"acceleration", -std::sin(value / 3)}});
     Eigen::Matrix<double, 5, 1> mat = Eigen::Matrix<double, 5, 1>::Random();
     plotter.add("eigen_vec", mat);
     plotter.plot();
