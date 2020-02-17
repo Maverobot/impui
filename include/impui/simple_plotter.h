@@ -92,6 +92,7 @@ class SimplePlotter {
                             [this] {
                               if (ImGui::Button("Reset")) {
                                 data_.clearAll();
+                                data_snap_.clearAll();
                               }
                               ImGui::SameLine();
                               if (!paused_ && ImGui::Button("Snapshot")) {
