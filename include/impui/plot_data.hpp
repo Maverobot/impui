@@ -29,7 +29,9 @@ class PlotData {
     auto& data = map_.at(name);
     data.push_back(value);
     if (data.size() > buffer_size_) {
-      data.erase(data.begin());
+      std::vector<std::decay_t<decltype(data)>::value_type>(
+          data.begin() + (data.size() - buffer_size_), data.end())
+          .swap(data);
     }
   }
 
