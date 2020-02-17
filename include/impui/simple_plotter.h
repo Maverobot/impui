@@ -64,17 +64,21 @@ class SimplePlotter {
 
     // 2. Show another simple window.
     if (show_plot_) {
-      canvas_ptr_->showWindow("Plot",
-                              [this] {
-                                auto& data = paused_ ? data_snap_ : data_;
-                                for (auto& key : data.keys()) {
-                                  if (key.empty()) {
-                                    return;
-                                  }
-                                  impui::plot(data, key, options_);
-                                }
-                              },
-                              &show_plot_, ImGuiWindowFlags_AlwaysAutoResize);
+      canvas_ptr_->showWindow(
+          "Plot",
+          [this] {
+            auto& data = paused_ ? data_snap_ : data_;
+            for (auto& key : data.keys()) {
+              if (key.empty()) {
+                throw std::runtime_error("key must not be empty!");
+              }
+              ImVec2 window_size = ImGui::GetWindowSize();
+              // TODO: fix this hacky line
+              options_.graph_size({window_size.x - 100, window_size.y / data.keys().size() - 10});
+              impui::plot(data, key, options_, impui::UseNativePlot{});
+            }
+          },
+          &show_plot_);
     }
 
     canvas_ptr_->render();

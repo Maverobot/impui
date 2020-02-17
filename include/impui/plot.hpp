@@ -4,6 +4,7 @@
 #include <impui/plot_data.hpp>
 
 #include <imgui.h>
+#include <imgui_plot.h>
 
 #include <string>
 
@@ -21,9 +22,34 @@ struct PlotOptions {
   IMPUI_ARG(int, stride) = sizeof(float);
 };
 
-inline void plot(const PlotData& data, const std::string& name, const PlotOptions& options) {
+struct UseImGuiPlot {};
+struct UseNativePlot {};
+
+inline void plot(const PlotData& data,
+                 const std::string& name,
+                 const PlotOptions& options,
+                 UseNativePlot) {
   ImGui::PlotLines(name.c_str(), data.data(name), data.len(name), options.values_offset(),
                    options.overlay_text().c_str(), options.scale_min(), options.scale_max(),
                    options.graph_size(), options.stride());
+}
+
+inline void plot(const PlotData& data,
+                 const std::string& name,
+                 const PlotOptions& options,
+                 UseImGuiPlot) {
+  ImGui::PlotConfig conf;
+  conf.values.ys = data.data(name);
+  conf.values.count = data.len(name);
+  conf.scale.min = -1;
+  conf.scale.max = 1;
+  conf.tooltip.show = true;
+  conf.grid_x.show = false;
+  conf.grid_y.show = false;
+  conf.frame_size = options.graph_size();
+  conf.line_thickness = 2.f;
+  conf.overlay_text = options.overlay_text().c_str();
+
+  ImGui::Plot(name.c_str(), conf);
 }
 }  // namespace impui
