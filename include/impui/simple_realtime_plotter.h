@@ -8,7 +8,7 @@
 
 #include <impui/simple_plotter.h>
 
-#include <concurrency_utils/realtime_executor.h>
+#include <concurrency_utils/executor.h>
 
 namespace impui {
 
@@ -50,7 +50,7 @@ class SimpleRealtimePlotter {
   }
 
  private:
-  concurrency_utils::RealtimeExecutor<FunctorType> executor_;
+  concurrency_utils::Executor<FunctorType> executor_;
   std::unique_ptr<impui::SimplePlotter> plotter_ptr_;
   std::vector<FunctorType> fs_;
 };  // namespace impui
