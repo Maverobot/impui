@@ -66,11 +66,12 @@ class SimplePlotter {
     if (show_plot_) {
       canvas_ptr_->showWindow("Plot",
                               [this] {
-                                for (auto& key : data_.keys()) {
+                                auto& data = paused_ ? data_snap_ : data_;
+                                for (auto& key : data.keys()) {
                                   if (key.empty()) {
                                     return;
                                   }
-                                  impui::plot(data_, key, options_);
+                                  impui::plot(data, key, options_);
                                 }
                               },
                               &show_plot_, ImGuiWindowFlags_AlwaysAutoResize);
@@ -82,18 +83,30 @@ class SimplePlotter {
 
  private:
   void showMainWindow() {
-    canvas_ptr_->showWindow("ImViz", [this] {
-      if (ImGui::Button("Reset")) {
-        data_.clearAll();
-      }
-      ImGui::SameLine();
-      ImGui::Checkbox("show plot", &show_plot_);
-    });
+    canvas_ptr_->showWindow("ImViz",
+                            [this] {
+                              if (ImGui::Button("Reset")) {
+                                data_.clearAll();
+                              }
+                              if (!paused_ && ImGui::Button("Pause")) {
+                                paused_ = true;
+                                data_snap_ = data_;
+                              }
+                              if (paused_ && ImGui::Button("Continue")) {
+                                paused_ = false;
+                              }
+                              ImGui::Checkbox("show plot", &show_plot_);
+                            },
+                            nullptr, ImGuiWindowFlags_AlwaysAutoResize);
   }
 
   impui::PlotOptions options_;
   impui::PlotData data_{100};
   bool show_plot_{true};
+
+  // For pausing the plot
+  bool paused_{false};
+  impui::PlotData data_snap_;
 
   std::unique_ptr<impui::Canvas> canvas_ptr_;
 };
