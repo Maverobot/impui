@@ -93,17 +93,17 @@ class SimplePlotter {
                               if (ImGui::Button("Reset")) {
                                 data_.clearAll();
                               }
-                              if (!paused_ && ImGui::Button("Pause")) {
+                              ImGui::SameLine();
+                              if (!paused_ && ImGui::Button("Snapshot")) {
                                 paused_ = true;
                                 data_snap_ = data_;
-                              }
-                              if (paused_ && ImGui::Button("Continue")) {
+                              } else if (paused_ && ImGui::Button("Continue")) {
                                 paused_ = false;
                               }
                               ImGui::Checkbox("show plot", &show_plot_);
                               ImGui::Text("Buffer size: ");
                               ImGui::SameLine();
-                              ImGui::SliderInt("", &buffer_size_, 1, 400);
+                              ImGui::SliderInt("", &buffer_size_, 1, 1000);
                             },
                             nullptr, ImGuiWindowFlags_AlwaysAutoResize);
   }
