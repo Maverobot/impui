@@ -1,6 +1,3 @@
-
-
-#include <Eigen/Dense>
 #include <memory>
 #include <string>
 #include <utility>
@@ -53,12 +50,5 @@ class SimpleRealtimePlotter {
   concurrency_utils::Executor<FunctorType> executor_;
   std::unique_ptr<impui::SimplePlotter> plotter_ptr_;
   std::vector<FunctorType> fs_;
-};  // namespace impui
+};
 }  // namespace impui
-
-/*
-  thoughts:
-
-
-
- */
