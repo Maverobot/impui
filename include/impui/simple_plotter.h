@@ -75,6 +75,7 @@ class SimplePlotter {
               ImVec2 window_size = ImGui::GetWindowSize();
               // TODO: fix this hacky line
               options_.graph_size({window_size.x - 100, window_size.y / data.keys().size() - 10});
+              data_.setBufferSize(buffer_size_);
               impui::plot(data, key, options_, impui::UseNativePlot{});
             }
           },
@@ -100,6 +101,9 @@ class SimplePlotter {
                                 paused_ = false;
                               }
                               ImGui::Checkbox("show plot", &show_plot_);
+                              ImGui::Text("Buffer size: ");
+                              ImGui::SameLine();
+                              ImGui::SliderInt("", &buffer_size_, 1, 400);
                             },
                             nullptr, ImGuiWindowFlags_AlwaysAutoResize);
   }
@@ -111,6 +115,8 @@ class SimplePlotter {
   // For pausing the plot
   bool paused_{false};
   impui::PlotData data_snap_;
+
+  int buffer_size_{100};
 
   std::unique_ptr<impui::Canvas> canvas_ptr_;
 };
