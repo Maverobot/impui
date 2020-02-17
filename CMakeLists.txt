@@ -15,7 +15,7 @@ find_package(glfw3 REQUIRED)
 find_package(OpenGL REQUIRED)
 find_package(Eigen3 REQUIRED)
 
-add_subdirectory(third_party/concurrency_utils)
+include(cmake/FetchConcurrencyUtils.cmake)
 
 # Build imgui library
 add_library(
