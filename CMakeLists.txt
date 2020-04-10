@@ -1,7 +1,7 @@
-cmake_minimum_required(VERSION 3.4)
+cmake_minimum_required(VERSION 3.11)
 project(
   impui
-  VERSION 0.0.1
+  VERSION 0.1
   LANGUAGES CXX)
 
 # Workaround for: OpenGL_GL_PREFERENCE has not been set to "GLVND" or "LEGACY"
