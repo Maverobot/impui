@@ -9,6 +9,7 @@
 #include <GLFW/glfw3.h>
 
 #include <memory>
+#include <stdexcept>
 
 namespace impui {
 class Canvas {
