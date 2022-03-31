@@ -13,14 +13,17 @@
 namespace impui {
 class Canvas {
  public:
-  template <typename... Args>
-  explicit Canvas(Args&&... args) {
+  explicit Canvas(int width,
+                  int height,
+                  const char* title,
+                  GLFWmonitor* monitor,
+                  GLFWwindow* share) {
     // Setup glfw window
     glfwSetErrorCallback(glfwErrorCallback);
     if (!glfwInit()) {
       throw std::runtime_error("glfw initialization failed.");
     }
-    window_ptr_ = glfwCreateWindow(std::forward<Args>(args)...);
+    window_ptr_ = glfwCreateWindow(width, height, title, monitor, share);
     if (window_ptr_ == nullptr) {
       throw std::runtime_error("glfwCreateWindow failed.");
     }
