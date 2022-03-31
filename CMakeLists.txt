@@ -16,6 +16,7 @@ find_package(OpenGL REQUIRED)
 find_package(Eigen3 REQUIRED)
 
 include(cmake/FetchConcurrencyUtils.cmake)
+include(cmake/TargetLinkLibrariesSystem.cmake)
 
 # Build imgui library
 add_library(
@@ -29,20 +30,23 @@ add_library(
   imgui/imgui_plot.cpp)
 target_link_libraries(imgui PUBLIC glfw ${OPENGL_LIBRARIES})
 target_include_directories(
-  imgui PUBLIC $<INSTALL_INTERFACE:imgui>
+  imgui SYSTEM PUBLIC $<INSTALL_INTERFACE:imgui>
                $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/imgui>)
 
 # Build impui library
 add_library(impui INTERFACE)
 add_library(ImPui::impui ALIAS impui)
 target_include_directories(
-  impui
-  INTERFACE $<INSTALL_INTERFACE:include>
-            $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
-            $<INSTALL_INTERFACE:imgui>
+  impui INTERFACE $<INSTALL_INTERFACE:include>
+                  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>)
+
+target_include_directories(
+  impui SYSTEM
+  INTERFACE $<INSTALL_INTERFACE:imgui>
             $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/imgui>
             $<BUILD_INTERFACE:${EIGEN3_INCLUDE_DIR}>)
-target_link_libraries(impui INTERFACE imgui concurrency_utils)
+
+target_link_libraries_system(impui INTERFACE imgui concurrency_utils)
 target_compile_features(impui INTERFACE cxx_std_14)
 
 # Define example target helper function
@@ -108,8 +112,8 @@ write_basic_package_version_file(
 
 configure_package_config_file(
   ${CMAKE_CURRENT_LIST_DIR}/cmake/ImPuiConfig.cmake.in
-  ${CMAKE_CURRENT_BINARY_DIR}/ImPuiConfig.cmake INSTALL_DESTINATION
-  ${INSTALL_CONFIGDIR})
+  ${CMAKE_CURRENT_BINARY_DIR}/ImPuiConfig.cmake
+  INSTALL_DESTINATION ${INSTALL_CONFIGDIR})
 
 # Install the config, configversion and custom find modules
 install(FILES ${CMAKE_CURRENT_BINARY_DIR}/ImPuiConfig.cmake
