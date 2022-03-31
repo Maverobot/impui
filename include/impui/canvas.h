@@ -21,7 +21,7 @@ class Canvas {
                   GLFWwindow* share) {
     // Setup glfw window
     glfwSetErrorCallback(glfwErrorCallback);
-    if (!glfwInit()) {
+    if (glfwInit() == 0) {
       throw std::runtime_error("glfw initialization failed.");
     }
     window_ptr_ = glfwCreateWindow(width, height, title, monitor, share);
@@ -59,11 +59,11 @@ class Canvas {
     glfwTerminate();
   }
 
-  bool shouldClose() const { return glfwWindowShouldClose(window_ptr_) != 0; }
+  auto shouldClose() const -> bool { return glfwWindowShouldClose(window_ptr_) != 0; }
 
-  void poll() { glfwPollEvents(); }
+  static void poll() { glfwPollEvents(); }
 
-  void frameStart() {
+  static void frameStart() {
     // Start the Dear ImGui frame
     ImGui_ImplOpenGL2_NewFrame();
     ImGui_ImplGlfw_NewFrame();
@@ -83,7 +83,7 @@ class Canvas {
     ImGui::End();
   }
 
-  void render() {
+  static void render() {
     glClear(GL_COLOR_BUFFER_BIT);
     ImGui::Render();
   }

@@ -10,7 +10,7 @@
 
 using namespace std::chrono_literals;
 
-int main(int argc, char* argv[]) {
+auto main(int argc, char* argv[]) -> int {
   if (argc != 2) {
     std::cout << "Usage: " << argv[0] << " buffer_size[int]" << std::endl;
     return 0;
@@ -31,7 +31,7 @@ int main(int argc, char* argv[]) {
     Eigen::Matrix<double, 5, 1> mat = Eigen::Matrix<double, 5, 1>::Random();
     plotter.add("eigen_vec", mat);
     plotter.plot();
-    value += 0.1f;
+    value += 0.1F;
     auto now = std::chrono::steady_clock::now();
     auto interval =
         std::chrono::duration_cast<std::chrono::duration<double, std::ratio<1>>>(now - last)

@@ -12,7 +12,7 @@
 namespace impui {
 
 using FunctorType = std::function<void(void)>;
-void run(FunctorType f) {
+inline void run(FunctorType f) {
   f();
 }
 
@@ -39,7 +39,7 @@ class SimpleRealtimePlotter {
         plotter_ptr_ = std::make_unique<impui::SimplePlotter>();
       }
 
-      for (auto f : fs) {
+      for (const auto& f : fs) {
         f();
       }
 

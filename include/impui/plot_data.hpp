@@ -12,7 +12,7 @@
 
 namespace {
 template <class T>
-std::ostream& operator<<(std::ostream& o, const std::vector<T>& arr) {
+auto operator<<(std::ostream& o, const std::vector<T>& arr) -> std::ostream& {
   copy(arr.cbegin(), arr.cend(), std::ostream_iterator<T>(o, " "));
   return o;
 }
@@ -24,7 +24,7 @@ class PlotData {
   explicit PlotData(size_t buffer_size = 100) : buffer_size_(buffer_size) {}
   void append(const std::string& name, float value) {
     if (!exist(name)) {
-      map_.insert_with_key(std::make_pair(name, Container{}));
+      map_.insertWithKey(std::make_pair(name, Container{}));
     }
     auto& data = map_.at(name);
     data.push_back(value);
@@ -35,7 +35,7 @@ class PlotData {
     }
   }
 
-  float const* data(const std::string& name) const {
+  auto data(const std::string& name) const -> float const* {
     if (!exist(name)) {
       return nullptr;
     }
@@ -58,19 +58,19 @@ class PlotData {
     map_.at(name).clear();
   }
 
-  size_t len(const std::string& name) const {
+  auto len(const std::string& name) const -> size_t {
     if (!exist(name)) {
       throw std::invalid_argument("no key found!");
     }
     return map_.at(name).size();
   }
 
-  std::string str(const std::string& name) const {
+  auto str(const std::string& name) const -> std::string {
     if (!exist(name)) {
       return {};
     }
 
-    auto& data = map_.at(name);
+    const auto& data = map_.at(name);
     std::ostringstream oss;
     oss << "[ ";
     oss.precision(6);
@@ -79,15 +79,15 @@ class PlotData {
     return oss.str();
   }
 
-  auto const& keys() const { return map_.keys(); }
+  auto keys() const -> auto const& { return map_.keys(); }
 
  private:
   using Container = std::vector<float>;
-  using DataMap = impui::sorted_map<std::string, Container>;
+  using DataMap = impui::SortedMap<std::string, Container>;
 
   DataMap map_;
   size_t buffer_size_;
 
-  bool exist(const std::string& name) const { return map_.find(name) != map_.end(); }
+  auto exist(const std::string& name) const -> bool { return map_.find(name) != map_.end(); }
 };
 }  // namespace impui

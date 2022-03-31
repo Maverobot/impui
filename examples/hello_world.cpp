@@ -2,17 +2,17 @@
 
 #include <cstdio>
 
-int main(int /*unused*/, char** /*unused*/) {
+auto main(int /*unused*/, char** /*unused*/) -> int {
   impui::Canvas canvas(1280, 720, "Dear ImGui GLFW+OpenGL2 example", nullptr, nullptr);
 
   // Our state
   bool show_another_window = false;
-  ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
+  ImVec4 clear_color = ImVec4(0.45F, 0.55F, 0.60F, 1.00F);
 
   // Main loop
   while (!canvas.shouldClose()) {
-    canvas.poll();
-    canvas.frameStart();
+    impui::Canvas::poll();
+    impui::Canvas::frameStart();
 
     // 1. Show a simple window
     canvas.showWindow("Hello, world!", [&show_another_window, &clear_color] {
@@ -43,22 +43,23 @@ int main(int /*unused*/, char** /*unused*/) {
 
     // 2. Show another simple window.
     if (show_another_window) {
-      canvas.showWindow("Another window",
-                        [&show_another_window] {
-                          // window will have a closing button that will
-                          // clear the bool when clicked)
-                          ImGui::Text("Hello from another window!");
-                          if (ImGui::Button("Close Me")) {
-                            show_another_window = false;
-                          }
-                        },
-                        &show_another_window);
+      canvas.showWindow(
+          "Another window",
+          [&show_another_window] {
+            // window will have a closing button that will
+            // clear the bool when clicked)
+            ImGui::Text("Hello from another window!");
+            if (ImGui::Button("Close Me")) {
+              show_another_window = false;
+            }
+          },
+          &show_another_window);
     }
 
     // Set background color
     glClearColor(clear_color.x, clear_color.y, clear_color.z, clear_color.w);
 
-    canvas.render();
+    impui::Canvas::render();
     canvas.frameEnd();
   }
 

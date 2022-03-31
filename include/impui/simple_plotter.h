@@ -8,18 +8,18 @@
 #include <iostream>
 #include <memory>
 
-namespace Not_Eigen {
+namespace not_eigen {
 template <typename Derived>
-typename Eigen::PlainObjectBase<Derived>::Scalar const* begin(
-    const Eigen::PlainObjectBase<Derived>& m) {
+auto begin(const Eigen::PlainObjectBase<Derived>& m) ->
+    typename Eigen::PlainObjectBase<Derived>::Scalar const* {
   return m.data();
 }
 template <typename Derived>
-typename Eigen::PlainObjectBase<Derived>::Scalar const* end(
-    const Eigen::PlainObjectBase<Derived>& m) {
+auto end(const Eigen::PlainObjectBase<Derived>& m) ->
+    typename Eigen::PlainObjectBase<Derived>::Scalar const* {
   return m.data() + m.size();
 }
-}  // namespace Not_Eigen
+}  // namespace not_eigen
 
 namespace impui {
 class SimplePlotter {
@@ -42,7 +42,7 @@ class SimplePlotter {
   template <typename Derived>
   void add(const std::string& key, const Eigen::PlainObjectBase<Derived>& matrix) {
     int i = 0;
-    for (auto it = Not_Eigen::begin(matrix); it < Not_Eigen::end(matrix); it++) {
+    for (auto it = not_eigen::begin(matrix); it < not_eigen::end(matrix); it++) {
       data_.append(key + std::to_string(i), *it);
       i++;
     }
@@ -68,12 +68,12 @@ class SimplePlotter {
           "Plot",
           [this] {
             auto& data = paused_ ? data_snap_ : data_;
-            for (auto& key : data.keys()) {
+            for (const auto& key : data.keys()) {
               if (key.empty()) {
                 throw std::runtime_error("key must not be empty!");
               }
               ImVec2 window_size = ImGui::GetWindowSize();
-              // TODO: fix this hacky line
+              // TODO(zheng): fix this hacky line
               options_.graph_size({window_size.x - 100, window_size.y / data.keys().size() - 10});
               data_.setBufferSize(buffer_size_);
               impui::plot(data, key, options_, impui::UseNativePlot{});
@@ -88,25 +88,26 @@ class SimplePlotter {
 
  private:
   void showMainWindow() {
-    canvas_ptr_->showWindow("ImViz",
-                            [this] {
-                              if (ImGui::Button("Reset")) {
-                                data_.clearAll();
-                                data_snap_.clearAll();
-                              }
-                              ImGui::SameLine();
-                              if (!paused_ && ImGui::Button("Snapshot")) {
-                                paused_ = true;
-                                data_snap_ = data_;
-                              } else if (paused_ && ImGui::Button("Continue")) {
-                                paused_ = false;
-                              }
-                              ImGui::Checkbox("show plot", &show_plot_);
-                              ImGui::Text("Buffer size: ");
-                              ImGui::SameLine();
-                              ImGui::SliderInt("", &buffer_size_, 1, 1000);
-                            },
-                            nullptr, ImGuiWindowFlags_AlwaysAutoResize);
+    canvas_ptr_->showWindow(
+        "ImViz",
+        [this] {
+          if (ImGui::Button("Reset")) {
+            data_.clearAll();
+            data_snap_.clearAll();
+          }
+          ImGui::SameLine();
+          if (!paused_ && ImGui::Button("Snapshot")) {
+            paused_ = true;
+            data_snap_ = data_;
+          } else if (paused_ && ImGui::Button("Continue")) {
+            paused_ = false;
+          }
+          ImGui::Checkbox("show plot", &show_plot_);
+          ImGui::Text("Buffer size: ");
+          ImGui::SameLine();
+          ImGui::SliderInt("", &buffer_size_, 1, 1000);
+        },
+        nullptr, ImGuiWindowFlags_AlwaysAutoResize);
   }
 
   impui::PlotOptions options_;
