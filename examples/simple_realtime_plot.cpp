@@ -18,7 +18,7 @@ auto main(int argc, char* argv[]) -> int {
   impui::SimpleRealtimePlotter plotter;
   // plotter.setBufferSize(atoi(argv[1]));
 
-  bool show_plot = false;
+  // bool show_plot = false;
   float value = 0.001;
 
   // Main loop

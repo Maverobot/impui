@@ -20,6 +20,7 @@ include(cmake/TargetLinkLibrariesSystem.cmake)
 include(cmake/StaticAnalysis.cmake)
 
 enable_clang_tidy()
+enable_cppcheck()
 
 # Build imgui library
 add_library(

@@ -26,12 +26,12 @@ class PlotData {
     if (!exist(name)) {
       map_.insertWithKey(std::make_pair(name, Container{}));
     }
-    auto& data = map_.at(name);
-    data.push_back(value);
-    if (data.size() > buffer_size_) {
-      std::vector<std::decay_t<decltype(data)>::value_type>(
-          data.begin() + (data.size() - buffer_size_), data.end())
-          .swap(data);
+    auto& serie = map_.at(name);
+    serie.push_back(value);
+    if (serie.size() > buffer_size_) {
+      std::vector<std::decay_t<decltype(serie)>::value_type>(
+          serie.begin() + (serie.size() - buffer_size_), serie.end())
+          .swap(serie);
     }
   }
 
@@ -70,11 +70,11 @@ class PlotData {
       return {};
     }
 
-    const auto& data = map_.at(name);
+    const auto& serie = map_.at(name);
     std::ostringstream oss;
     oss << "[ ";
     oss.precision(6);
-    oss << data;
+    oss << serie;
     oss << "]";
     return oss.str();
   }
