@@ -12,7 +12,7 @@
 namespace impui {
 
 using FunctorType = std::function<void(void)>;
-inline void run(FunctorType f) {
+inline void run(const FunctorType& f) {
   f();
 }
 

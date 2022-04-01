@@ -8,6 +8,11 @@
 
 #include <cstdio>
 
+const double kPeriodScaler = 1000;
+const size_t kRandomMatrixRowsNumber = 5;
+const size_t kRandomMatrixColumnsNumber = 1;
+using ExampleMatrix = Eigen::Matrix<double, kRandomMatrixRowsNumber, kRandomMatrixColumnsNumber>;
+
 using namespace std::chrono_literals;
 
 auto main(int argc, char* argv[]) -> int {
@@ -19,25 +24,29 @@ auto main(int argc, char* argv[]) -> int {
   // plotter.setBufferSize(atoi(argv[1]));
 
   // bool show_plot = false;
-  float value = 0.001;
+  float steps = 0;
 
   // Main loop
   auto last = std::chrono::steady_clock::now();
   for (;;) {
-    // update data
-    plotter.add({{"position", std::sin(1. / 1000. * value)},
-                 {"velocity", std::cos(1. / 1000. * value)},
-                 {"acceleration", -std::sin(1. / 1000. * value)}});
-    Eigen::Matrix<double, 5, 1> mat = Eigen::Matrix<double, 5, 1>::Random();
+    // Update data
+    plotter.add({{"position", std::sin(steps / kPeriodScaler)},
+                 {"velocity", std::cos(steps / kPeriodScaler)},
+                 {"acceleration", -std::sin(steps / kPeriodScaler)}});
+    ExampleMatrix mat = ExampleMatrix::Random();
     plotter.add("eigen_vec", mat);
+
+    // Plot
     plotter.plot();
-    value += 0.1F;
+
+    // Show time cost for adding and plotting data
     auto now = std::chrono::steady_clock::now();
     auto interval =
-        std::chrono::duration_cast<std::chrono::duration<double, std::ratio<1>>>(now - last)
-            .count();
+        std::chrono::duration_cast<std::chrono::duration<double, std::milli>>(now - last).count();
     last = now;
-    std::cout << "looping time: " << interval * 1000 << " milliseconds" << std::endl;
+    std::cout << "Time cost for adding/plotting data: " << interval << " milliseconds" << std::endl;
+
+    steps++;
   }
 
   return 0;
