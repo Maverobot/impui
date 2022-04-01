@@ -17,6 +17,9 @@ find_package(Eigen3 REQUIRED)
 
 include(cmake/FetchConcurrencyUtils.cmake)
 include(cmake/TargetLinkLibrariesSystem.cmake)
+include(cmake/StaticAnalysis.cmake)
+
+enable_clang_tidy()
 
 # Build imgui library
 add_library(
@@ -31,7 +34,8 @@ add_library(
 target_link_libraries(imgui PUBLIC glfw ${OPENGL_LIBRARIES})
 target_include_directories(
   imgui SYSTEM PUBLIC $<INSTALL_INTERFACE:imgui>
-               $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/imgui>)
+                      $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/imgui>)
+set_target_properties(imgui PROPERTIES CXX_CLANG_TIDY "" CXX_CPPCHECK "")
 
 # Build impui library
 add_library(impui INTERFACE)
